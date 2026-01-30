@@ -377,11 +377,6 @@
   document.getElementById("backBtn").onclick = () => renderClickMeMenu();
 }
 
-      const vid = document.getElementById("vid");
-      document.getElementById("replayBtn").onclick = () => { try { vid.currentTime = 0; vid.play(); } catch(e) {} };
-      document.getElementById("backBtn").onclick = () => renderClickMeMenu();
-    }
-
     function renderImageSlideshow() {
       const imgs = (CONFIG.slideshowImages || []).filter(Boolean);
 
