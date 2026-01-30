@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>💘 Kayta Dmz, can I be yours?</title>
+  <style>
+    .giftBody{
+  white-space: pre-line;   /* THIS makes \n show up as real line breaks */
+  text-align: center;      /* centers your message */
+  max-width: 52ch;         /* optional: keeps it readable */
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;        /* optional: nicer spacing */
+}
+
+    :root {
+      --bg: #0b0b10;
+      --card: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.95);
+      --muted: rgba(255,255,255,.70);
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 20% 15%, rgba(255,77,141,.25), transparent 60%),
+        radial-gradient(900px 700px at 85% 75%, rgba(255,154,194,.18), transparent 55%),
+        radial-gradient(700px 500px at 50% 90%, rgba(255,255,255,.06), transparent 60%),
+        var(--bg);
+      padding: 18px;
+    }
+    .app { width: min(520px, 100%); }
+    .card {
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 22px;
+      overflow: hidden;
+    }
+    .badge {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    h1 { margin: 14px 0 8px; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; }
+    p  { margin: 0 0 18px; color: var(--muted); line-height: 1.45; }
+    .btnRow { display: grid; gap: 12px; margin-top: 14px; }
+    .btnRow.two { grid-template-columns: 1fr 1fr; }
+    button {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      min-height: 50px;
+    }
+    button:active { transform: translateY(1px) scale(.99); }
+    button:hover { background: rgba(255,255,255,.14); }
+    .primary {
+      background: linear-gradient(135deg, rgba(255,77,141,.95), rgba(255,154,194,.80));
+      border-color: rgba(255,255,255,.0);
+      color: #111;
+    }
+    .danger { background: rgba(255,77,77,.18); border-color: rgba(255,77,77,.35); }
+    .ghost  { background: transparent; border-color: rgba(255,255,255,.16); color: var(--muted); font-weight: 650; }
+    .divider { height: 1px; background: rgba(255,255,255,.10); margin: 18px 0; }
+    .toast {
+      margin-top: 12px; padding: 12px 14px; border-radius: 14px;
+      background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.14);
+      color: var(--text); display: none;
+    }
+    .toast.show { display: block; }
+    .giftGrid { display: grid; gap: 12px; grid-template-columns: 1fr; margin-top: 10px; }
+    .giftMeta { display: flex; gap: 10px; align-items: center; justify-content: space-between; margin-top: 12px; color: var(--muted); font-size: 13px; }
+    .pill {
+      display: inline-flex; gap: 8px; align-items: center;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.12);
+      color: var(--muted); font-size: 13px; white-space: nowrap;
+    }
+    .media { width: 100%; border-radius: 18px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); overflow: hidden; margin-top: 14px; }
+    .media img, .media video { width: 100%; display: block; }
+    .small { font-size: 13px; color: var(--muted); }
+    .fadeIn { animation: fadeIn .22s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .progressBar { height: 8px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.10); overflow: hidden; margin-top: 12px; }
+    .progressFill { height: 100%; width: 0%; background: linear-gradient(90deg, rgba(255,77,141,.95), rgba(255,154,194,.85)); transition: width .25s ease; }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="card" id="screen"></div>
+  </div>
+
+  <script>
+    /***********************
+     * CUSTOMIZE HERE
+     ***********************/
+    const CONFIG = {
+      askTitle: "Katya Dmz Rdgz, May I be your Valentine? 💘",
+      wrongAnswerText: "Wrong answer, try again :(",
+
+      gifts: [
+        { id: "gift1", title: "Gift 1 🎁", subtitle: "Tap to open", body: "Felicidades!!!!!!! Unas flores para usted mi amorcito 😚 \n\nEn los tiempos antiguos, regalar flores se utilizaba en rituales religiosos para honrar a los dioses y las diosas. Por ejemplo, en Grecia, las flores eran ofrendas a Apolo, el dios del sol, mientras que en Roma, se usaban en la festividad de Flora, la diosa de la floración. De esta forma, el regalo de flores se convirtió en un símbolo de respeto y admiración hacia las divinidades. \n\nY usted, amor mío, merece toda la admiración y respeto que mi corazón puede entregar. \n\nUsted es mi Diosa. TE AMO 💖.", image: "assets/gift1.gif" },
+        { id: "gift2", title: "Gift 2 🎁", subtitle: "Tap to open", body: "OMG!!! 🙀 You just won some chocolates 🍫💝 So yummy right??? \n\nEn nuestras culturas, desde tiempos antiguos, el cacao siempre ha sido considerado una delicadeza. Según terra.mx, el chocolate es reconocido universalmente por psicólogos y expertos en lenguaje no verbal como un regalo que evoca emociones positivas como el amor, la felicidad, el afecto y la gratitud. Su sabor dulce y su textura suave son características que inspiran sensaciones placenteras, haciendo de este obsequio una elección ideal para expresar cariño y aprecio en diversas ocasiones. \n\nEntonces, más que un regalo común, me gustaría que interprete estos chocolatitos como un símbolo de agradecimiento por todo su amor, cariño y esfuerzo invertido en nuestra relación. Soy la persona más afortunada de estar a su lado. \n\nY recuerde siempre, son más dulces sus besitos que cualquier chocolate preciosa 👩🏽‍❤️‍💋‍👨🏽😜😉", image: "assets/gift2.gif" },
+        { id: "gift3", title: "Gift 3 🎁", subtitle: "Tap to open", body: "Another gift!?!?!?! 🥰🥰🥰 Wait... this man must really love you... You won a mini gift box!!! 🎁 \n\nEs importante rescatar que los regalos más caros, no necesariamente son los mejores. Quizás eso sea un poco conveniente decir, pero yo sé que para usted realmente lo más importante es la intención, el esfuerzo y el tiempo que uno se toma haciendo dichos regalos. Tal vez mis obsequios este año no pueden ser del precio que usted se merece, pero sí en la intención y la dedicación. Mi situación económica no me va a detener de darle el amor, cariño y dedicación que usted sí se merece. \n\nThat being said.... I wonder what's inside it... 🫨", image: "assets/gift3.gif" }
+      ],
+
+      // Put your slideshow video at assets/slideshow.mp4. If you don't have one, set this to "".
+      slideshowVideo: "assets/slideshow.mp4",
+
+      // Optional music: only plays after user taps (phone rules). Set enableMusic to true to use.
+      music: "assets/song.mp3",
+      enableMusic: true,
+      musicVolume: 0.15,
+
+      // If slideshowVideo is "", we'll use these images instead:
+      slideshowImages: ["assets/gift1.gif", "assets/gift2.gif", "assets/gift3.gif"],
+      slideshowSecondsPerImage: 2.5
+    };
+
+    /***********************
+     * STATE
+     ***********************/
+    const state = { openedGifts: new Set(), musicEl: null, slideshowTimer: null, slideshowIndex: 0 };
+    const screen = document.getElementById("screen");
+
+    function setScreen(html) {
+      screen.innerHTML = html;
+      screen.classList.remove("fadeIn");
+      void screen.offsetWidth;
+      screen.classList.add("fadeIn");
+    }
+
+    function escapeHtml(s) {
+      return String(s).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+    }
+
+    function progressPct() { return Math.round((state.openedGifts.size / CONFIG.gifts.length) * 100); }
+
+    // ADDED: background music helpers
+    function startBackgroundMusic() {
+      if (!CONFIG.enableMusic || !CONFIG.music) return;
+
+      if (!state.musicEl) {
+        state.musicEl = new Audio(CONFIG.music);
+        state.musicEl.loop = true;
+      }
+
+      state.musicEl.volume = (typeof CONFIG.musicVolume === "number") ? CONFIG.musicVolume : 0.15;
+
+      if (state.musicEl.paused) {
+        state.musicEl.currentTime = 0; // start from the very beginning
+        state.musicEl.play().catch(() => {});
+      }
+    }
+
+    function stopBackgroundMusic(resetToStart = false) {
+      if (!state.musicEl) return;
+      state.musicEl.pause();
+      if (resetToStart) state.musicEl.currentTime = 0;
+    }
+
+    function renderHome() {
+      setScreen(`
+        <div class="badge">💌 Hecho con mucho esfuerzo, para el amor de mi vida 😘 You deserve the world 🌎</div>
+        <h1>${escapeHtml(CONFIG.askTitle)}</h1>
+        <p>Atte: The luckiest man in the world, Kevin Moya 🤩<3</p>
+
+        <div class="btnRow two">
+          <button class="primary" id="yesBtn">Yes 😍🥰💖</button>
+          <button class="danger" id="noBtn">No 😭🤮😵</button>
+        </div>
+
+        <div class="toast" id="toast"></div>
+      `);
+
+      document.getElementById("yesBtn").onclick = () => {
+        startBackgroundMusic();
+        renderGiftsMenu();
+      };
+
+      document.getElementById("noBtn").onclick = () => {
+        startBackgroundMusic();
+        const toast = document.getElementById("toast");
+        toast.textContent = CONFIG.wrongAnswerText;
+        toast.classList.add("show");
+        setTimeout(() => renderHome(), 1100);
+      };
+    }
+
+    function renderGiftsMenu() {
+      const pct = progressPct();
+      const allOpened = state.openedGifts.size === CONFIG.gifts.length;
+
+      const giftButtons = CONFIG.gifts.map(g => {
+        const opened = state.openedGifts.has(g.id);
+        return `
+          <button id="${g.id}Btn">
+            ${escapeHtml(g.title)} ${opened ? "✅" : ""}
+            <div class="small">${escapeHtml(g.subtitle)}</div>
+          </button>
+        `;
+      }).join("");
+
+      setScreen(`
+        <div class="badge">🎁 Pick a gift, ooooor pick them all... 😏 </div>
+        <h1>YAY!!!! Congratulations Katya, you chose correctly!!! 😽😽😽</h1>
+        <p>Abra todos los regalitos para una sorpresa al final mi amorcito 😚.</p>
+
+        <div class="giftMeta">
+          <span class="pill">Opened: ${state.openedGifts.size}/${CONFIG.gifts.length}</span>
+          <span class="pill">Progress: ${pct}%</span>
+        </div>
+
+        <div class="progressBar" aria-label="progress">
+          <div class="progressFill" style="width:${pct}%;"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="giftGrid">${giftButtons}</div>
+
+        <div class="divider"></div>
+
+        <div class="btnRow">
+          <button class="${allOpened ? "primary" : ""}" id="nextBtn" ${allOpened ? "" : "disabled"}
+                  style="${allOpened ? "" : "opacity:.55; cursor:not-allowed;"}">
+            ${allOpened ? "Next ➜" : "Open all gifts to continue"}
+          </button>
+          <button class="ghost" id="backHomeBtn">Back</button>
+        </div>
+      `);
+
+      CONFIG.gifts.forEach(g => { document.getElementById(`${g.id}Btn`).onclick = () => renderGift(g.id); });
+
+      document.getElementById("nextBtn").onclick = () => {
+        if (state.openedGifts.size === CONFIG.gifts.length) renderClickMeMenu();
+      };
+
+      document.getElementById("backHomeBtn").onclick = () => renderHome();
+    }
+
+    function renderGift(giftId) {
+      const g = CONFIG.gifts.find(x => x.id === giftId);
+      if (!g) return renderGiftsMenu();
+
+      state.openedGifts.add(g.id);
+
+      const imgHtml = g.image ? `
+        <div class="media">
+          <img src="${escapeHtml(g.image)}" alt="${escapeHtml(g.title)}"
+               onerror="this.closest('.media').style.display='none';" />
+        </div>
+      ` : "";
+
+      setScreen(`
+        <div class="badge">🎀 Opened</div>
+        <h1>${escapeHtml(g.title)}</h1>
+        <p class="giftBody">${escapeHtml(g.body)}</p>
+        ${imgHtml}
+
+        <div class="divider"></div>
+        <div class="btnRow">
+          <button class="primary" id="backGiftsBtn">Back to gifts</button>
+        </div>
+      `);
+
+      document.getElementById("backGiftsBtn").onclick = () => renderGiftsMenu();
+    }
+
+    function renderClickMeMenu() {
+      setScreen(`
+        <div class="badge">✨ Sorpresita final ✨</div>
+        <h1>We're not quite done yet...</h1>
+        <p>Click the button below for the final surprise!</p>
+
+        <div class="btnRow">
+          <button class="primary" id="clickMeBtn">Click me</button>
+          <button class="ghost" id="backGiftsBtn">Back to gifts</button>
+        </div>
+      `);
+
+      document.getElementById("clickMeBtn").onclick = () => startSlideshow();
+      document.getElementById("backGiftsBtn").onclick = () => renderGiftsMenu();
+    }
+
+    function stopSlideshowTimers() {
+      if (state.slideshowTimer) { clearInterval(state.slideshowTimer); state.slideshowTimer = null; }
+      state.slideshowIndex = 0;
+    }
+
+    async function startSlideshow() {
+      stopSlideshowTimers();
+
+      // Stop the background song so it does NOT overlap with slideshow.mp4 audio
+      stopBackgroundMusic(true);
+
+      if (CONFIG.slideshowVideo) renderVideoSlideshow();
+      else renderImageSlideshow();
+    }
+
+    function renderVideoSlideshow() {
+      setScreen(`
+        <div class="badge">🎬 Un último cariñito 🎬</div>
+        <h1>Thank you for being part of my life ❤️</h1>
+        <p>No hay palabras que puedan expresar lo que siento por usted mi amor. \n\nUsted es una de las mejores cosas que me han pasado en la vida, y no puedo dejar de agradecerle por la persona que usted me ha hecho ser. Día a día, me doy cuenta de lo hermosa, inteligente, graciosa, e increíble que usted es. Nuestra vida juntos hasta el momento es un sueño que jamás pensé vivir. No conocía lo que era amar así, hasta que usted llegó a mi vida. Infinitas gracias por todo lo que me ha entregado. Estoy trabajando duro todos los días para ser mi mejor versión para usted amorcito. \n\nDe lo más profundo de mi corazón, te amo, te amo y TE AMO. Prometo seguir a su lado y mejorando cada vez más, con su apoyo. ❤️❤️❤️❤️❤️</p>
+
+        <div class="media">
+          <video id="vid" src="${escapeHtml(CONFIG.slideshowVideo)}" controls playsinline autoplay
+                 onerror="document.getElementById('videoError').style.display='block';"></video>
+        </div>
+
+        <div class="toast" id="videoError" style="display:none;">
+          I couldn’t load the video. If you didn’t add slideshow.mp4, set CONFIG.slideshowVideo to "" and use slideshowImages instead.
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="btnRow">
+          <button class="primary" id="replayBtn">Replay</button>
+          <button class="ghost" id="backBtn">Back</button>
+        </div>
+      `);
+
+      const vid = document.getElementById("vid");
+      document.getElementById("replayBtn").onclick = () => { try { vid.currentTime = 0; vid.play(); } catch(e) {} };
+      document.getElementById("backBtn").onclick = () => renderClickMeMenu();
+    }
+
+    function renderImageSlideshow() {
+      const imgs = (CONFIG.slideshowImages || []).filter(Boolean);
+
+      setScreen(`
+        <div class="badge">🖼️ Slideshow</div>
+        <h1>💞</h1>
+        <p>Enjoy the memories.</p>
+
+        <div class="media" id="imgWrap" style="min-height:240px;">
+          <img id="slideImg" src="" alt="slideshow" />
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="btnRow">
+          <button class="primary" id="replayBtn">Replay</button>
+          <button class="ghost" id="backBtn">Back</button>
+        </div>
+      `);
+
+      const imgEl = document.getElementById("slideImg");
+
+      if (!imgs.length) {
+        document.getElementById("imgWrap").innerHTML = `
+          <div style="padding:18px; color: rgba(255,255,255,.75);">
+            Add images to CONFIG.slideshowImages (and put files in /assets).
+          </div>`;
+        return;
+      }
+
+      const show = () => { imgEl.src = imgs[state.slideshowIndex % imgs.length]; state.slideshowIndex++; };
+
+      show();
+      state.slideshowTimer = setInterval(show, Math.max(1, CONFIG.slideshowSecondsPerImage) * 1000);
+
+      document.getElementById("replayBtn").onclick = () => { stopSlideshowTimers(); startSlideshow(); };
+      document.getElementById("backBtn").onclick = () => { stopSlideshowTimers(); renderClickMeMenu(); };
+    }
+
+    renderHome();
+  </script>
+</body>
+</html>
