@@ -129,7 +129,7 @@
       ],
 
       // Put your slideshow video at assets/slideshow.mp4. If you don't have one, set this to "".
-      slideshowVideo: "assets/slideshow.mp4",
+      slideshowVideo: "https://www.youtube.com/embed/rR8qkPKal8U?autoplay=1&playsinline=1",
 
       // Optional music: only plays after user taps (phone rules). Set enableMusic to true to use.
       music: "assets/song.mp3",
@@ -324,27 +324,58 @@
     }
 
     function renderVideoSlideshow() {
-      setScreen(`
-        <div class="badge">🎬 Un último cariñito 🎬</div>
-        <h1>Thank you for being part of my life ❤️</h1>
-        <p>No hay palabras que puedan expresar lo que siento por usted mi amor. \n\nUsted es una de las mejores cosas que me han pasado en la vida, y no puedo dejar de agradecerle por la persona que usted me ha hecho ser. Día a día, me doy cuenta de lo hermosa, inteligente, graciosa, e increíble que usted es. Nuestra vida juntos hasta el momento es un sueño que jamás pensé vivir. No conocía lo que era amar así, hasta que usted llegó a mi vida. Infinitas gracias por todo lo que me ha entregado. Estoy trabajando duro todos los días para ser mi mejor versión para usted amorcito. \n\nDe lo más profundo de mi corazón, te amo, te amo y TE AMO. Prometo seguir a su lado y mejorando cada vez más, con su apoyo. ❤️❤️❤️❤️❤️</p>
+  const isYouTube = /youtube\.com\/embed/i.test(CONFIG.slideshowVideo);
 
-        <div class="media">
-          <video id="vid" src="${escapeHtml(CONFIG.slideshowVideo)}" controls playsinline autoplay
-                 onerror="document.getElementById('videoError').style.display='block';"></video>
-        </div>
+  const mediaHtml = isYouTube
+    ? `
+      <div class="media">
+        <iframe
+          id="vidFrame"
+          src="${escapeHtml(CONFIG.slideshowVideo)}"
+          style="width:100%; aspect-ratio:9/16; border:0;"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    `
+    : `
+      <div class="media">
+        <video id="vid" src="${escapeHtml(CONFIG.slideshowVideo)}" controls playsinline autoplay
+               onerror="document.getElementById('videoError').style.display='block';"></video>
+      </div>
+    `;
 
-        <div class="toast" id="videoError" style="display:none;">
-          I couldn’t load the video. If you didn’t add slideshow.mp4, set CONFIG.slideshowVideo to "" and use slideshowImages instead.
-        </div>
+  setScreen(`
+    <div class="badge">🎬 Un último cariñito 🎬</div>
+    <h1>Thank you for being part of my life ❤️</h1>
+    <p>No hay palabras que puedan expresar lo que siento por usted mi amor. \n\nUsted es una de las mejores cosas que me han pasado en la vida, y no puedo dejar de agradecerle por la persona que usted me ha hecho ser. Día a día, me doy cuenta de lo hermosa, inteligente, graciosa, e increíble que usted es. Nuestra vida juntos hasta el momento es un sueño que jamás pensé vivir. No conocía lo que era amar así, hasta que usted llegó a mi vida. Infinitas gracias por todo lo que me ha entregado. Estoy trabajando duro todos los días para ser mi mejor versión para usted amorcito. \n\nDe lo más profundo de mi corazón, te amo, te amo y TE AMO. Prometo seguir a su lado y mejorando cada vez más, con su apoyo. ❤️❤️❤️❤️❤️</p>
 
-        <div class="divider"></div>
+    ${mediaHtml}
 
-        <div class="btnRow">
-          <button class="primary" id="replayBtn">Replay</button>
-          <button class="ghost" id="backBtn">Back</button>
-        </div>
-      `);
+    <div class="toast" id="videoError" style="display:none;">
+      I couldn’t load the video.
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="btnRow">
+      <button class="primary" id="replayBtn">Replay</button>
+      <button class="ghost" id="backBtn">Back</button>
+    </div>
+  `);
+
+  document.getElementById("replayBtn").onclick = () => {
+    if (isYouTube) {
+      const frame = document.getElementById("vidFrame");
+      frame.src = frame.src; // reload iframe to replay
+    } else {
+      const vid = document.getElementById("vid");
+      try { vid.currentTime = 0; vid.play(); } catch(e) {}
+    }
+  };
+
+  document.getElementById("backBtn").onclick = () => renderClickMeMenu();
+}
 
       const vid = document.getElementById("vid");
       document.getElementById("replayBtn").onclick = () => { try { vid.currentTime = 0; vid.play(); } catch(e) {} };
