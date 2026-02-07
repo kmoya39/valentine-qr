@@ -6,12 +6,12 @@
   <title>💘 Kayta Dmz, can I be yours?</title>
   <style>
     .giftBody{
-  white-space: pre-line;   /* THIS makes \n show up as real line breaks */
-  text-align: center;      /* centers your message */
-  max-width: 52ch;         /* optional: keeps it readable */
+  white-space: pre-line;
+  text-align: center;
+  max-width: 52ch;
   margin-left: auto;
   margin-right: auto;
-  line-height: 1.6;        /* optional: nicer spacing */
+  line-height: 1.6;
 }
 
     :root {
@@ -116,7 +116,7 @@
 
   <script>
     /***********************
-     * CUSTOMIZE HERE
+   
      ***********************/
     const CONFIG = {
       askTitle: "Katya Dmz Rdgz, May I be your Valentine? 💘",
@@ -128,21 +128,21 @@
         { id: "gift3", title: "Gift 3 🎁", subtitle: "Tap to open", body: "Another gift!?!?!?! 🥰🥰🥰 Wait... this man must really love you... You won a mini gift box!!! 🎁 \n\nEs importante rescatar que los regalos más caros, no necesariamente son los mejores. Quizás eso sea un poco conveniente decir, pero yo sé que para usted realmente lo más importante es la intención, el esfuerzo y el tiempo que uno se toma haciendo dichos regalos. Tal vez mis obsequios este año no pueden ser del precio que usted se merece, pero sí en la intención y la dedicación. Mi situación económica no me va a detener de darle el amor, cariño y dedicación que usted sí se merece. \n\nThat being said.... I wonder what's inside it... 🫨", image: "assets/gift3.gif" }
       ],
 
-      // Put your slideshow video at assets/slideshow.mp4. If you don't have one, set this to "".
+      
       slideshowVideo: "https://www.youtube.com/embed/rR8qkPKal8U?autoplay=1&playsinline=1",
 
-      // Optional music: only plays after user taps (phone rules). Set enableMusic to true to use.
+      
       music: "assets/song.mp3",
       enableMusic: true,
       musicVolume: 0.15,
 
-      // If slideshowVideo is "", we'll use these images instead:
+      
       slideshowImages: ["assets/gift1.gif", "assets/gift2.gif", "assets/gift3.gif"],
       slideshowSecondsPerImage: 2.5
     };
 
     /***********************
-     * STATE
+     
      ***********************/
     const state = { openedGifts: new Set(), musicEl: null, slideshowTimer: null, slideshowIndex: 0 };
     const screen = document.getElementById("screen");
@@ -173,7 +173,7 @@
       state.musicEl.volume = (typeof CONFIG.musicVolume === "number") ? CONFIG.musicVolume : 0.15;
 
       if (state.musicEl.paused) {
-        state.musicEl.currentTime = 0; // start from the very beginning
+        state.musicEl.currentTime = 0; 
         state.musicEl.play().catch(() => {});
       }
     }
@@ -316,7 +316,7 @@
     async function startSlideshow() {
       stopSlideshowTimers();
 
-      // Stop the background song so it does NOT overlap with slideshow.mp4 audio
+      
       stopBackgroundMusic(true);
 
       if (CONFIG.slideshowVideo) renderVideoSlideshow();
@@ -367,7 +367,7 @@
   document.getElementById("replayBtn").onclick = () => {
     if (isYouTube) {
       const frame = document.getElementById("vidFrame");
-      frame.src = frame.src; // reload iframe to replay
+      frame.src = frame.src; 
     } else {
       const vid = document.getElementById("vid");
       try { vid.currentTime = 0; vid.play(); } catch(e) {}
